@@ -22,16 +22,9 @@ namespace AutoMapper.Tests
 
             var employeeDto = mapper.Map<Employee, EmployeeDto>(employee);
 
-            if (employee.Id == employeeDto.Id
-                && employee.Age == employeeDto.Age
-                && employee.Name == employeeDto.Name)
-            {
-                Assert.Pass();
-            }
-            else
-            {
-                Assert.Fail();
-            }
+            Assert.AreEqual(employee.Id, employeeDto.Id);
+            Assert.AreEqual(employee.Age, employeeDto.Age);
+            Assert.AreEqual(employee.Name, employeeDto.Name);
         }
     }
 }
