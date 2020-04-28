@@ -15,10 +15,10 @@ namespace ModelMapper
             propertiesIntersection = new Dictionary<(Type, Type), IEnumerable<string>>();
         }
 
-        private IEnumerable<string> IntersectPropertyNames<TSource, TDestination>()
+        private IEnumerable<string> IntersectPropertyNames(Type sourceType, Type destinationType)
         {
-            var sourceTypeProperties = typeof(TSource).GetProperties();
-            var destinationTypeProperties = typeof(TDestination).GetProperties();
+            var sourceTypeProperties = sourceType.GetProperties();
+            var destinationTypeProperties = destinationType.GetProperties();
 
             return sourceTypeProperties
                 .Select(x => x.Name)
@@ -26,13 +26,13 @@ namespace ModelMapper
                     .Select(x => x.Name));
         }
 
-        private IEnumerable<string> GetCommonProperties<TSource, TDestination>()
+        private IEnumerable<string> GetCommonProperties(Type sourceType, Type destinationType)
         {
-            var typesPair = (typeof(TSource), typeof(TDestination));
+            var typesPair = (sourceType, destinationType);
 
             if (!propertiesIntersection.ContainsKey(typesPair))
             {
-                var propertiesNamesIntersection = IntersectPropertyNames<TSource, TDestination>();
+                var propertiesNamesIntersection = IntersectPropertyNames(sourceType, destinationType);
 
                 propertiesIntersection.Add(typesPair, propertiesNamesIntersection);
             }
@@ -40,21 +40,50 @@ namespace ModelMapper
             return propertiesIntersection[typesPair];
         }
 
-        public TDestination Map<TSource, TDestination>(TSource source)
+        public object Map(object source, Type sourceType, Type destinationType)
         {
-            var commonProperties = GetCommonProperties<TSource, TDestination>();
+            var commonProperties = GetCommonProperties(sourceType, destinationType);
 
-            var destination = Activator.CreateInstance<TDestination>();
+            var destination = Activator.CreateInstance(destinationType);
 
             foreach (var propertyName in commonProperties)
             {
-                var propSource = typeof(TSource).GetProperty(propertyName);
-                var propDestination = typeof(TDestination).GetProperty(propertyName);
+                var propSource = sourceType.GetProperty(propertyName);
+                var propDestination = destinationType.GetProperty(propertyName);
 
-                propDestination.SetValue(destination, propSource.GetValue(source));
+                var value = propSource.GetValue(source);
+
+                if (HaveEntityAndDtoRelation(propSource, propDestination))
+                {
+                    var mappedValue = Map(value, propSource.PropertyType, propDestination.PropertyType);
+                    propDestination.SetValue(destination, mappedValue);
+                }
+                else
+                {
+                    propDestination.SetValue(destination, value);
+                }
             }
 
             return destination;
+        }
+
+        public TDestination Map<TSource, TDestination>(TSource source)
+        {
+            return (TDestination)Map(source, typeof(TSource), typeof(TDestination));
+        }
+
+        private bool HaveEntityAndDtoRelation(PropertyInfo first, PropertyInfo second)
+        {
+            var firstName = first.PropertyType.Name.ToLower();
+            var secondName = second.PropertyType.Name.ToLower();
+
+            return firstName == secondName + "dto" 
+                || firstName + "dto" == secondName;
+        }
+
+        private object GetPropertyValue(object source, PropertyInfo property)
+        {
+            return property.GetValue(source);
         }
     }
 }

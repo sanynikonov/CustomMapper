@@ -16,6 +16,8 @@ namespace ModelMapper.Tests.TestData
 
         public ICollection<string> Children { get; set; }
 
+        public Employee Master { get; set; }
+
         public Employee()
         {
             Children = new List<string>();

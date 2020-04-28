@@ -52,5 +52,15 @@ namespace ModelMapper.Tests
 
             Assert.AreEqual(employee.Children, employeeDto.Children);
         }
+
+        [TestCase]
+        public void Map_EntityToDto_MapsEntityPropertiesToDto()
+        {
+            var game = new Game { Id = 1, Title = "Lol", Description = "Kek", Author = new Author { Id = 2, Name = "Bethesda", Office = "Skyrim" } };
+
+            var gameDto = mapper.Map<Game, GameDto>(game);
+
+            Assert.AreEqual(game.Author.Id, gameDto.Author.Id);
+        }
     }
 }
