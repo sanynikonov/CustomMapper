@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace AutoMapper
 {
-    public class Mapper : IMapper
+    public class ModelMapper : IMapper
     {
         private IEnumerable<string> GetPropertiesIntersection<TSource, TDestination>()
         {

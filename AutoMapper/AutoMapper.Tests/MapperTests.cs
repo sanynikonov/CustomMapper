@@ -10,7 +10,7 @@ namespace AutoMapper.Tests
         [SetUp]
         public void SetUp()
         {
-            mapper = new Mapper();
+            mapper = new ModelMapper();
         }
 
         [TestCase(1, 10, "Alex")]
