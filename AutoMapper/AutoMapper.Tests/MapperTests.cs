@@ -16,7 +16,7 @@ namespace AutoMapper.Tests
         [TestCase(1, 10, "Alex")]
         [TestCase(1000, -100, "")]
         [TestCase(int.MaxValue, int.MinValue, null)]
-        public void Map_EmployeeToEmployeeDto_MapsAllProperties(int id, int age, string name)
+        public void Map_EmployeeToEmployeeDto_MapsPropertiesWithSameNames(int id, int age, string name)
         {
             var employee = new Employee { Id = id, Age = age, Name = name };
 

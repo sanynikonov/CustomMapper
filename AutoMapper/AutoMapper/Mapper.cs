@@ -8,30 +8,32 @@ namespace AutoMapper
 {
     public class Mapper : IMapper
     {
+        private IEnumerable<string> GetPropertiesIntersection<TSource, TDestination>()
+        {
+            var sourceTypeProperties = typeof(TSource).GetProperties();
+            var destinationTypeProperties = typeof(TDestination).GetProperties();
+
+            return sourceTypeProperties
+                .Select(x => x.Name)
+                .Intersect(destinationTypeProperties
+                    .Select(x => x.Name));
+        }
+
         public TDestination Map<TSource, TDestination>(TSource source)
         {
-            var sourceType = typeof(TSource);
-            var destinationType = typeof(TDestination);
+            var propertiesNamesIntersection = GetPropertiesIntersection<TSource, TDestination>();
 
-            var sourceTypeProperties = sourceType.GetProperties();
-            var destinationTypeProperties = destinationType.GetProperties();
-
-            var propertiesNamesIntersection = sourceTypeProperties
-                .Select(x => x.Name)
-                .Intersect(
-                    destinationTypeProperties.Select(x => x.Name));
-
-            var destination = Activator.CreateInstance(destinationType);
+            var destination = Activator.CreateInstance<TDestination>();
 
             foreach (var propertyName in propertiesNamesIntersection)
             {
-                var propSource = sourceTypeProperties.First(x => x.Name == propertyName);
-                var propDestination = destinationTypeProperties.First(x => x.Name == propertyName);
+                var propSource = typeof(TSource).GetProperty(propertyName);
+                var propDestination = typeof(TDestination).GetProperty(propertyName);
 
                 propDestination.SetValue(destination, propSource.GetValue(source));
             }
 
-            return (TDestination)destination;
+            return destination;
         }
     }
 }
