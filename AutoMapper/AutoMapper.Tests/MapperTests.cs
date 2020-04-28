@@ -39,5 +39,18 @@ namespace AutoMapper.Tests
 
             Assert.AreNotEqual(employee.MonthSalary, employeeDto.YearSalary);
         }
+
+        [TestCase()]
+        [TestCase("Dina", "Alex")]
+        [TestCase("Dina", "Alex", "Michelle", "Blueford")]
+        [TestCase("Greta", "Van", "Fleet")]
+        public void Map_EmployeeToEmployeeDto_MapsCollectionsWithSameNames(params string[] children)
+        {
+            var employee = new Employee { Children = children };
+
+            var employeeDto = mapper.Map<Employee, EmployeeDto>(employee);
+
+            Assert.AreEqual(employee.Children, employeeDto.Children);
+        }
     }
 }
