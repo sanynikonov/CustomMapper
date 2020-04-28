@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace AutoMapper.Tests.TestData
+namespace ModelMapper.Tests.TestData
 {
     public class Employee
     {

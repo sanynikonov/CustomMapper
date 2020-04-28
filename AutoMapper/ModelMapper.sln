@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29806.167
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoMapper", "AutoMapper\AutoMapper.csproj", "{AB844481-6604-4A89-9256-EB740320DF24}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelMapper", "AutoMapper\ModelMapper.csproj", "{AB844481-6604-4A89-9256-EB740320DF24}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoMapper.Tests", "AutoMapper.Tests\AutoMapper.Tests.csproj", "{929D6468-5DF8-4DD8-A2A8-73B1C8DBF260}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelMapper.Tests", "AutoMapper.Tests\ModelMapper.Tests.csproj", "{929D6468-5DF8-4DD8-A2A8-73B1C8DBF260}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoMapper.Tests.TestData", "AutoMapper.Tests.TestData\AutoMapper.Tests.TestData.csproj", "{714E246D-F1B0-407F-A255-024996FF5D57}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelMapper.Tests.TestData", "AutoMapper.Tests.TestData\ModelMapper.Tests.TestData.csproj", "{714E246D-F1B0-407F-A255-024996FF5D57}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

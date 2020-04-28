@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -13,8 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AutoMapper.Tests.TestData\AutoMapper.Tests.TestData.csproj" />
-    <ProjectReference Include="..\AutoMapper\AutoMapper.csproj" />
+    <ProjectReference Include="..\AutoMapper.Tests.TestData\ModelMapper.Tests.TestData.csproj" />
+    <ProjectReference Include="..\AutoMapper\ModelMapper.csproj" />
   </ItemGroup>
 
 </Project>

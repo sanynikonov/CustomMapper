@@ -1,8 +1,8 @@
-using AutoMapper.Tests.TestData;
+using ModelMapper.Tests.TestData;
 using NUnit.Framework;
 using System.Collections.Generic;
 
-namespace AutoMapper.Tests
+namespace ModelMapper.Tests
 {
     public class Tests
     {
