@@ -8,6 +8,13 @@ namespace AutoMapper
 {
     public class ModelMapper : IMapper
     {
+        private IDictionary<(Type, Type), IEnumerable<string>> propertiesIntersection;
+
+        public ModelMapper()
+        {
+            propertiesIntersection = new Dictionary<(Type, Type), IEnumerable<string>>();
+        }
+
         private IEnumerable<string> GetPropertiesIntersection<TSource, TDestination>()
         {
             var sourceTypeProperties = typeof(TSource).GetProperties();
@@ -21,11 +28,18 @@ namespace AutoMapper
 
         public TDestination Map<TSource, TDestination>(TSource source)
         {
-            var propertiesNamesIntersection = GetPropertiesIntersection<TSource, TDestination>();
+            var typesPair = (typeof(TSource), typeof(TDestination));
+
+            if (!propertiesIntersection.ContainsKey(typesPair))
+            {
+                var propertiesNamesIntersection = GetPropertiesIntersection<TSource, TDestination>();
+
+                propertiesIntersection.Add(typesPair, propertiesNamesIntersection);
+            }
 
             var destination = Activator.CreateInstance<TDestination>();
 
-            foreach (var propertyName in propertiesNamesIntersection)
+            foreach (var propertyName in propertiesIntersection[typesPair])
             {
                 var propSource = typeof(TSource).GetProperty(propertyName);
                 var propDestination = typeof(TDestination).GetProperty(propertyName);

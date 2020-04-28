@@ -1,5 +1,6 @@
 using AutoMapper.Tests.TestData;
 using NUnit.Framework;
+using System.Collections.Generic;
 
 namespace AutoMapper.Tests
 {
