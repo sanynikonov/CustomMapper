@@ -26,5 +26,17 @@ namespace AutoMapper.Tests
             Assert.AreEqual(employee.Age, employeeDto.Age);
             Assert.AreEqual(employee.Name, employeeDto.Name);
         }
+
+        [TestCase(100)]
+        [TestCase(9999.999)]
+        [TestCase(-100)]
+        public void Map_EmployeeToEmployeeDto_DoesntMapPropertiesWithDifferentNames(double salary)
+        {
+            var employee = new Employee { MonthSalary = salary };
+
+            var employeeDto = mapper.Map<Employee, EmployeeDto>(employee);
+
+            Assert.AreNotEqual(employee.MonthSalary, employeeDto.YearSalary);
+        }
     }
 }

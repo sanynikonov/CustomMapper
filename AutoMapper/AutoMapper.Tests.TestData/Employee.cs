@@ -10,5 +10,6 @@ namespace AutoMapper.Tests.TestData
         public string Name { get; set; }
         public int Age { get; set; }
         public bool Sex { get; set; }
+        public double MonthSalary { get; set; }
     }
 }
