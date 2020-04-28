@@ -8,14 +8,14 @@ namespace AutoMapper
 {
     public class ModelMapper : IMapper
     {
-        private IDictionary<(Type, Type), IEnumerable<string>> propertiesIntersection;
+        private readonly IDictionary<(Type, Type), IEnumerable<string>> propertiesIntersection;
 
         public ModelMapper()
         {
             propertiesIntersection = new Dictionary<(Type, Type), IEnumerable<string>>();
         }
 
-        private IEnumerable<string> GetPropertiesIntersection<TSource, TDestination>()
+        private IEnumerable<string> IntersectPropertyNames<TSource, TDestination>()
         {
             var sourceTypeProperties = typeof(TSource).GetProperties();
             var destinationTypeProperties = typeof(TDestination).GetProperties();
@@ -26,20 +26,27 @@ namespace AutoMapper
                     .Select(x => x.Name));
         }
 
-        public TDestination Map<TSource, TDestination>(TSource source)
+        private IEnumerable<string> GetCommonProperties<TSource, TDestination>()
         {
             var typesPair = (typeof(TSource), typeof(TDestination));
 
             if (!propertiesIntersection.ContainsKey(typesPair))
             {
-                var propertiesNamesIntersection = GetPropertiesIntersection<TSource, TDestination>();
+                var propertiesNamesIntersection = IntersectPropertyNames<TSource, TDestination>();
 
                 propertiesIntersection.Add(typesPair, propertiesNamesIntersection);
             }
 
+            return propertiesIntersection[typesPair];
+        }
+
+        public TDestination Map<TSource, TDestination>(TSource source)
+        {
+            var commonProperties = GetCommonProperties<TSource, TDestination>();
+
             var destination = Activator.CreateInstance<TDestination>();
 
-            foreach (var propertyName in propertiesIntersection[typesPair])
+            foreach (var propertyName in commonProperties)
             {
                 var propSource = typeof(TSource).GetProperty(propertyName);
                 var propDestination = typeof(TDestination).GetProperty(propertyName);
